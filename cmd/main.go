@@ -10,8 +10,12 @@ func main() {
 	fx.New(
 		fx.Provide(
 			web.NewServer,
-			web.NewMux,
+			fx.Annotate(web.NewMux, fx.ParamTags(`group:"route"`)),
 		),
 		fx.Invoke(func(*http.Server) {}),
 	).Run()
+}
+
+func AsRoute(route any) any {
+	return fx.Annotate(route, fx.As(new(web.Route)), fx.ResultTags(`group:"route"`))
 }
