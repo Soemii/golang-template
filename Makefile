@@ -1,9 +1,11 @@
 buildDEV:
 	@echo "Building DEV..."
+	@sqlc generate
 	@go build -o ./tmp/main -tags dev ./cmd/main.go
 
 buildProd:
 	@echo "Building..."
+	@sqlc generate
 	@go build -o ./tmp/main ./cmd/main.go
 
 docker-run:
