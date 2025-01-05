@@ -4,30 +4,15 @@
 package main
 
 import (
-	"context"
+	"github.com/joho/godotenv"
 	"log"
 	"os"
 )
-import "github.com/testcontainers/testcontainers-go/modules/postgres"
 
 func init() {
-	postgresContainer, err := postgres.Run(context.Background(),
-		"postgres:16-alpine",
-		postgres.WithDatabase("test"),
-		postgres.WithUsername("user"),
-		postgres.WithPassword("password"),
-		postgres.BasicWaitStrategies(),
-	)
+	err := godotenv.Load()
 	if err != nil {
-		panic(err)
+		log.Fatal("Error loading .env file")
 	}
-	connectionString, err := postgresContainer.ConnectionString(context.Background())
-	if err != nil {
-		panic(err)
-	}
-	err = os.Setenv("DB_DSN", connectionString)
-	if err != nil {
-		panic(err)
-	}
-	log.Println("Postgres container started")
+	log.Println(os.Getenv("DB_DSN"))
 }
