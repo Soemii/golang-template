@@ -1,0 +1,19 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "queries/"
+    schema: "./internal/outbound/datastore/migrations/"
+    gen:
+      go:
+        package: "datastore"
+        out: "internal/outbound/datastore"
+        sql_package: "database/sql"
+        output_db_file_name: "sqlc_sqlc.go"
+        output_files_suffix: "_sqlc"
+        output_models_file_name: "models_sqlc.go"
+        output_querier_file_name: "querier_sqlc.go"
+        output_copyfrom_file_name: "copyfrom_sqlc.go"
+        emit_json_tags: true
+        emit_sql_as_comment: true
+        emit_empty_slices: true
+        emit_interface: true
