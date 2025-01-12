@@ -9,7 +9,7 @@ cmd = "make buildDEV"
 # Array of commands to run after ^C
 post_cmd = []
 # Binary file yields from `cmd`.
-bin = "tmp/main"
+bin = "tmp/app"
 # Add additional arguments when running binary (bin/full_bin). Will run './tmp/main hello world'.
 args_bin = []
 # Watch these filename extensions.

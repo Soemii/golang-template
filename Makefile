@@ -1,12 +1,12 @@
 buildDEV:
 	@echo "Building DEV..."
 	@sqlc generate
-	@go build -tags dev -o ./tmp/main ./cmd
+	@go build -tags dev -o ./tmp/app ./cmd
 
 buildProd:
 	@echo "Building..."
 	@sqlc generate
-	@go build -o ./tmp/main ./cmd
+	@go build -o ./tmp/app ./cmd
 
 docker-run:
 	@if docker compose up 2>/dev/null; then \
