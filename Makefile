@@ -6,7 +6,7 @@ buildDEV:
 buildProd:
 	@echo "Building..."
 	@sqlc generate
-	@go build -o ./tmp/app ./cmd
+	@CGO_ENABLED=0 go build -o ./tmp/app ./cmd
 
 docker-run:
 	@if docker compose up 2>/dev/null; then \
