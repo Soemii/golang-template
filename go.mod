@@ -1,5 +1,5 @@
 module github.com/Soemii/golang-template
-
+//FIXME: Change the module name to your own repository
 go 1.23
 
 require (
