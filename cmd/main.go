@@ -16,6 +16,7 @@ func main() {
 		fx.Provide(
 			web.NewServer,
 			fx.Annotate(web.NewMux, fx.ParamTags(`group:"route"`)),
+			AsRoute(web.NewPrometheusRoute),
 		),
 		fx.Provide(
 			fx.Annotate(migrations.NewMigrationFiles, fx.ResultTags(`name:"migrationFiles"`), fx.As(new(fs.FS))),
