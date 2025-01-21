@@ -1,11 +1,15 @@
-version: '3'
-
 services:
   database:
     image: 'postgres:latest'
     ports:
       - "5432:5432"
+    networks:
+        - database
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: test
+
+networks:
+  database:
+    name: database
