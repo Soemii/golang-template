@@ -2,8 +2,6 @@ name: Go
 
 on:
   push:
-    branches:
-      - main
   pull_request:
 
 jobs:
@@ -18,10 +16,15 @@ jobs:
           go-version: stable
       - name: Install SQLC
         run: go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+      - name: Install SQLC
+        run: go install go.uber.org/mock/mockgen@latest
+      - name: Mod Download
+        run: go mod download
+      - name: SQLC Generate
+        run: sqlc generate
       - name: Generate
-        run: go mod download && go generate ./...
+        run: go generate ./...
       - name: Build
-        run: go build -v ./...
-
+        run: go build -v cmd/main.go
       - name: Test
         run: go test -v ./...

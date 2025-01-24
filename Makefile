@@ -26,6 +26,8 @@ docker-down:
 
 test:
 	@echo "Testing..."
+	@go generate ./...
+	@sqlc generate
 	@go test ./... -v
 
 clean:
