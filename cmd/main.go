@@ -6,13 +6,18 @@ import (
 	"github.com/Soemii/golang-template/internal/outbound/datastore"
 	"github.com/Soemii/golang-template/internal/outbound/datastore/migrations"
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/ipfans/fxlogger"
 	"go.uber.org/fx"
 	"io/fs"
 	"net/http"
+	"os"
+
+	"github.com/rs/zerolog"
 )
 
 func main() {
 	fx.New(
+		fx.WithLogger(fxlogger.WithZerolog(zerolog.New(os.Stdout))),
 		fx.Provide(
 			web.NewServer,
 			fx.Annotate(web.NewMux, fx.ParamTags(`group:"route"`)),
