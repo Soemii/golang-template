@@ -9,7 +9,6 @@ import (
 	"github.com/ipfans/fxlogger"
 	"go.uber.org/fx"
 	"io/fs"
-	"net/http"
 	"os"
 
 	"github.com/rs/zerolog"
@@ -20,15 +19,14 @@ func main() {
 		fx.WithLogger(fxlogger.WithZerolog(zerolog.New(os.Stdout))),
 		fx.Provide(
 			web.NewServer,
-			fx.Annotate(web.NewMux, fx.ParamTags(`group:"route"`)),
-			AsRoute(web.NewPrometheusRoute),
+			web.NewMonitoringHandler,
 		),
 		fx.Provide(
 			fx.Annotate(migrations.NewMigrationFiles, fx.ResultTags(`name:"migrationFiles"`), fx.As(new(fs.FS))),
 			fx.Annotate(migrations.NewMigration, fx.ParamTags(`name:"migrationFiles"`)),
 			datastore.NewDB,
 		),
-		fx.Invoke(func(*http.Server) {}),
+		fx.Invoke(web.SetupRoutes),
 		fx.Invoke(func(migration *migrate.Migrate) error {
 			err := migration.Up()
 			if !errors.Is(err, migrate.ErrNoChange) {
@@ -37,8 +35,4 @@ func main() {
 			return nil
 		}),
 	).Run()
-}
-
-func AsRoute(route any) any {
-	return fx.Annotate(route, fx.As(new(web.Route)), fx.ResultTags(`group:"route"`))
 }

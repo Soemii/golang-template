@@ -1,19 +1,16 @@
 package web
 
 import (
+	"github.com/gofiber/fiber/v2"
 	"go.uber.org/fx"
-	"net/http"
 )
 
-func NewServer(lifecycle fx.Lifecycle, mux *http.ServeMux) *http.Server {
-	serv := &http.Server{
-		Addr:    ":8080",
-		Handler: mux,
-	}
+func NewServer(lifecycle fx.Lifecycle) *fiber.App {
+	app := fiber.New()
 	lifecycle.Append(fx.StartStopHook(func() {
-		go serv.ListenAndServe()
+		go app.Listen(":8080")
 	}, func() error {
-		return serv.Close()
+		return app.Shutdown()
 	}))
-	return serv
+	return app
 }
